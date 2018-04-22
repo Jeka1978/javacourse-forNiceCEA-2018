@@ -38,6 +38,7 @@ public class ObjectFactory {
         type = resolveImpl(type);
         T t = type.newInstance();
         configure(t);
+        invokeInitMethod();
 
 
         return t;
