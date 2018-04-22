@@ -1,10 +1,11 @@
 package my_spring;
 
 import lombok.SneakyThrows;
+import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import javax.annotation.PostConstruct;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,11 +39,32 @@ public class ObjectFactory {
         type = resolveImpl(type);
         T t = type.newInstance();
         configure(t);
-        invokeInitMethod();
-
-
+        invokeInitMethod(t);
+        if (type.isAnnotationPresent(Benchmark.class)) {
+            return (T) Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), (proxy, method, args) -> {
+                System.out.println("*********  "+method.getName()+" ****** starts");
+                long start = System.nanoTime();
+                Object retVal = method.invoke(t, args);
+                long end = System.nanoTime();
+                System.out.println(end-start);
+                System.out.println("*********  "+method.getName()+" ****** end");
+                return retVal;
+            });
+        }
         return t;
     }
+
+    @SneakyThrows
+    private <T> void invokeInitMethod(T t) {
+        Class<?> type = t.getClass();
+        Set<Method> methods = ReflectionUtils.getAllMethods(type);
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(PostConstruct.class)) {
+                method.invoke(t);
+            }
+        }
+    }
+
 
     private <T> void configure(T t) {
         for (ObjectConfigurator configurator : configurators) {
