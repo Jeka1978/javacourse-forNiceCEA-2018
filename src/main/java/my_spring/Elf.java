@@ -15,4 +15,9 @@ public class Elf {
     @InjectRandom(min = 20, max = 35)
     private int speed;
 
+    public static void main(String[] args) {
+        Elf elf = ObjectFactory.getInstance().createObject(Elf.class);
+
+    }
+
 }
