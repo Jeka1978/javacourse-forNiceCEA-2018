@@ -3,6 +3,7 @@ package com.nice.cea;
 import lombok.*;
 import lombok.experimental.Wither;
 import lombok.extern.log4j.Log4j;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,9 @@ import java.util.Map;
 public class Person extends Object{
 
 
-    public void stam(String... strs) {
-
+    @Test
+    public void stam() {
+        System.out.println("STAMMMMM!!!");
     }
 
 
