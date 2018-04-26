@@ -3,8 +3,14 @@ package my_spring;
 /**
  * @author Evgeny Borisov
  */
-public interface NiceService {
-    void doWork();
 
-    void drinkBeer();
+public class NiceService {
+    public void doWork() {
+        System.out.println("Working...");
+    }
+
+    @Benchmark
+    public void drinkBeer() {
+        System.out.println("Leff is the best");
+    }
 }

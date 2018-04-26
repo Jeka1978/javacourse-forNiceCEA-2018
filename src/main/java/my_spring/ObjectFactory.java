@@ -19,6 +19,7 @@ public class ObjectFactory {
     private Config config = new JavaConfig();
     private Reflections scanner = new Reflections("my_spring");
     private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
 
     public static ObjectFactory getInstance() {
         return ourInstance;
@@ -32,6 +33,12 @@ public class ObjectFactory {
                 configurators.add(aClass.newInstance());
             }
         }
+        Set<Class<? extends ProxyConfigurator>> classes2 = scanner.getSubTypesOf(ProxyConfigurator.class);
+        for (Class<? extends ProxyConfigurator> aClass : classes2) {
+            if (!Modifier.isAbstract(aClass.getModifiers())) {
+                proxyConfigurators.add(aClass.newInstance());
+            }
+        }
     }
 
     @SneakyThrows
@@ -40,16 +47,13 @@ public class ObjectFactory {
         T t = type.newInstance();
         configure(t);
         invokeInitMethod(t);
-        if (type.isAnnotationPresent(Benchmark.class)) {
-            return (T) Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), (proxy, method, args) -> {
-                System.out.println("*********  "+method.getName()+" ****** starts");
-                long start = System.nanoTime();
-                Object retVal = method.invoke(t, args);
-                long end = System.nanoTime();
-                System.out.println(end-start);
-                System.out.println("*********  "+method.getName()+" ****** end");
-                return retVal;
-            });
+        t = wrapWithProxyIfNeeded(type, t);
+        return t;
+    }
+
+    private <T> T wrapWithProxyIfNeeded(Class<T> type, T t) {
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = (T) proxyConfigurator.wrapWithProxy(t, type);
         }
         return t;
     }
