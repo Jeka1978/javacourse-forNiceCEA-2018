@@ -1,6 +1,7 @@
 package transaction_problem_example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class DataServiceImpl implements DataService {
 
     @Override
     @Transactional
+//    @Scheduled(cron = "1/1 * * * * FRI")
     public void saveAll(Stream<Data> dataStream) {
 
         dataStream.forEach(proxy::save);

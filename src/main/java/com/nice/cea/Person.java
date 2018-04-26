@@ -19,6 +19,7 @@ import java.util.Map;
 @Wither
 @Log4j
 public class Person extends Object{
+    private transient int age2;
 
 
     @Test
