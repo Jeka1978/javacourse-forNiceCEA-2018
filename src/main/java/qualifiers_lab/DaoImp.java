@@ -2,12 +2,13 @@ package qualifiers_lab;
 
 import org.springframework.stereotype.Repository;
 
+import static qualifiers_lab.DBType.MONGO;
+
 /**
  * @author Evgeny Borisov
  */
 
-//prod code
-@Repository
+@NiceRepo(MONGO)
 public class DaoImp implements Dao {
     @Override
     public void save() {

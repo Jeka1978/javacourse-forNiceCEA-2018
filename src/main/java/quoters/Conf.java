@@ -1,6 +1,7 @@
 package quoters;
 
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * @author Evgeny Borisov
@@ -12,4 +13,8 @@ import org.springframework.context.annotation.*;
 @ComponentScan
 @ComponentScan
 public class Conf {
+    @Bean
+    public PropertySourcesPlaceholderConfigurer configurer(){
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 }
