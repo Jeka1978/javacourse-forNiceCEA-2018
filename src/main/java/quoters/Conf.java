@@ -9,12 +9,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @Configuration
 @PropertySource("classpath:quotes.properties")
 @ComponentScan
-@ComponentScan
-@ComponentScan
-@ComponentScan
+@EnableAspectJAutoProxy
 public class Conf {
-    @Bean
+    /*@Bean  if you have spring <4.3
     public PropertySourcesPlaceholderConfigurer configurer(){
         return new PropertySourcesPlaceholderConfigurer();
-    }
+    }*/
 }
