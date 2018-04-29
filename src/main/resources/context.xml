@@ -4,32 +4,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="quote" class="java.lang.String">
-        <constructor-arg value="Trust Me!"/>
-    </bean>
 
-    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
-    <bean class="quoters.bpp.InjectRandomAnnotationBeanPostProcessor"/>
 
-    <!--<context:property-placeholder location="classpath:propfile...."-->
 
-    <!--<context:component-scan base-package="quoters"/>-->
 
-    <bean id="talkingRobot" class="quoters.TalkingRobotImpl">
-
-    </bean>
-    <bean id="shakespearQuoter" class="quoters.ShakespearQuoter" scope="prototype">
-        <property name="message" value="2 B || ! 2 B"/>
-    </bean>
-
-    <bean class="quoters.bpp.BeanDefinitionValidatorBeanFactoryPostProcessor"/>
-    <bean id="terminatorQuoter" class="quoters.TerminatorQuoter" destroy-method="killAll">
-        <property name="messages">
-            <list>
-                <value>I'll be back</value>
-                <ref bean="quote"/>
-                <value>Astalavista baby</value>
-            </list>
-        </property>
-    </bean>
 </beans>
